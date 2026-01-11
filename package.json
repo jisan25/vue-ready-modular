@@ -1,18 +1,25 @@
 {
-    "name": "vue-ready-modular",
-    "version": "0.1.0",
-    "type": "module",
-    "bin": {
-        "vue-modular": "./bin/cli.js"
-    },
-    "description": "CLI for generating modular Vue.js architecture",
-    "keywords": [
-        "vue",
-        "cli",
-        "modular",
-        "pinia",
-        "vue-query"
-    ],
-    "author": "Shihabun Jisan",
-    "license": "MIT"
+  "name": "vue-ready-modular",
+  "version": "1.0.0",
+  "description": "Vue.js module generator",
+  "main": "lib/generator.js",
+  "bin": {
+    "vue-modular": "./bin/cli.js"
+  },
+  "type": "module",
+  "scripts": {
+    "test": "echo \"No tests yet\""
+  },
+  "keywords": [
+    "vue",
+    "generator",
+    "module",
+    "cli"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "path": "^0.12.7",
+    "pluralize": "^8.0.0"
+  }
 }
