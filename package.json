@@ -1,10 +1,10 @@
 {
   "name": "vue-ready-modular",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "Vue.js module generator",
   "main": "lib/generator.js",
   "bin": {
-    "vue-modular": "./bin/cli.js"
+    "vue-modular": "bin/cli.js"
   },
   "type": "module",
   "scripts": {
