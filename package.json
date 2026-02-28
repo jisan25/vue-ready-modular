@@ -1,6 +1,6 @@
 {
   "name": "vue-ready-modular",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Vue.js module generator",
   "main": "lib/generator.js",
   "bin": {
