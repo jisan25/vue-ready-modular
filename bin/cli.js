@@ -1,22 +1,18 @@
 #!/usr/bin/env node
 
-import { createModule, createSubModule } from "../lib/generator.js";
+import { makeCommand } from "../commands/make.command.js";
 
 const args = process.argv.slice(2);
 
-if (args[0] !== "make" || !args[1]) {
-  console.log("Usage:");
-  console.log("  vue-modular make <module-name>");
-  console.log("  vue-modular make <parent-module>:<submodule-name>");
-  process.exit(1);
-}
+const [command, input] = args;
 
-const input = args[1];
+switch (command) {
+  case "make":
+    makeCommand(input);
+    break;
 
-// Check if user wants a submodule
-if (input.includes(":")) {
-  const [parent, child] = input.split(":");
-  createSubModule(parent, child);
-} else {
-  createModule(input);
+  default:
+    console.log("Usage:");
+    console.log("vue-modular make module");
+    console.log("vue-modular make module:submodule");
 }
