@@ -10,6 +10,11 @@ import editModalTemplate from "../lib/templates/modal-edit.template.js";
 import viewModalTemplate from "../lib/templates/modal-view.template.js";
 import deleteModalTemplate from "../lib/templates/modal-delete.template.js";
 import commonFormTemplate from "../lib/templates/modal-common-form.template.js";
+import dataTemplate from "../lib/templates/data.template.js";
+import serviceTemplate from "../lib/templates/service.template.js";
+import queryTemplate from "../lib/templates/query.template.js";
+import mutationTemplate from "../lib/templates/mutation.template.js";
+import storeTemplate from "../lib/templates/store.template.js";
 
 export function generateSubModule(parentName, subName) {
   const parent = parentName.toLowerCase();
@@ -37,9 +42,7 @@ export function generateSubModule(parentName, subName) {
   generateFromBlueprint(ctx, {
     basePath: parentPath,
 
-    folders: [
-      `pages/${subName}Parts`
-    ],
+    folders: [`pages/${subName}Parts`],
 
     files: [
       {
@@ -70,6 +73,24 @@ export function generateSubModule(parentName, subName) {
       {
         path: `pages/{{subName}}Parts/CommonForm.vue`,
         template: commonFormTemplate,
+      },
+      {
+        path: `data/{{subName}}Data.js`,
+        template: dataTemplate,
+      },
+
+      { path: "stores/{{subName}}Store.js", template: storeTemplate },
+
+      { path: "services/{{subName}}Service.js", template: serviceTemplate },
+
+      {
+        path: "queries/use{{subName}}Query.js",
+        template: queryTemplate,
+      },
+
+      {
+        path: "queries/use{{subName}}Mutations.js",
+        template: mutationTemplate,
       },
     ],
   });
