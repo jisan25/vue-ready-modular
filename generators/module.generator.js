@@ -49,11 +49,11 @@ export function generateModule(name) {
       { path: "index.js", template: indexTemplate },
       { path: "routes.js", template: routesTemplate },
 
-      { path: "stores/{{name}}Store.js", template: storeTemplate },
+      { path: "stores/{{Name}}Store.js", template: storeTemplate },
 
-      { path: "data/{{name}}Data.js", template: dataTemplate },
+      { path: "data/{{Name}}Data.js", template: dataTemplate },
 
-      { path: "services/{{name}}Service.js", template: serviceTemplate },
+      { path: "services/{{Name}}Service.js", template: serviceTemplate },
 
       {
         path: "queries/use{{Name}}Query.js",
