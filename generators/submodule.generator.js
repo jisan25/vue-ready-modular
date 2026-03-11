@@ -28,6 +28,7 @@ export function generateSubModule(parentName, subName) {
   const ctx = {
     name: sub,
     Name: Sub,
+    subName,
     parent,
     Parent,
     Names: plural(Sub),
@@ -37,37 +38,37 @@ export function generateSubModule(parentName, subName) {
     basePath: parentPath,
 
     folders: [
-      `pages/${Sub}Parts`
+      `pages/${subName}Parts`
     ],
 
     files: [
       {
-        path: `pages/{{Name}}Page.vue`,
+        path: `pages/{{subName}}Page.vue`,
         template: pageTemplate,
       },
 
       {
-        path: `pages/{{Name}}Parts/AddModal.vue`,
+        path: `pages/{{subName}}Parts/AddModal.vue`,
         template: addModalTemplate,
       },
 
       {
-        path: `pages/{{Name}}Parts/EditModal.vue`,
+        path: `pages/{{subName}}Parts/EditModal.vue`,
         template: editModalTemplate,
       },
 
       {
-        path: `pages/{{Name}}Parts/ViewModal.vue`,
+        path: `pages/{{subName}}Parts/ViewModal.vue`,
         template: viewModalTemplate,
       },
 
       {
-        path: `pages/{{Name}}Parts/DeleteModal.vue`,
+        path: `pages/{{subName}}Parts/DeleteModal.vue`,
         template: deleteModalTemplate,
       },
 
       {
-        path: `pages/{{Name}}Parts/CommonForm.vue`,
+        path: `pages/{{subName}}Parts/CommonForm.vue`,
         template: commonFormTemplate,
       },
     ],

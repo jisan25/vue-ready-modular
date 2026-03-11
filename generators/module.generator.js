@@ -32,7 +32,6 @@ export function generateModule(name) {
   const ctx = {
     name: module,
     Name: Module,
-    Names: plural(Module),
   };
 
   generateFromBlueprint(ctx, {
@@ -57,7 +56,7 @@ export function generateModule(name) {
       { path: "services/{{name}}Service.js", template: serviceTemplate },
 
       {
-        path: "queries/use{{Names}}Query.js",
+        path: "queries/use{{Name}}Query.js",
         template: queryTemplate,
       },
 
