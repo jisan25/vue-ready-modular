@@ -2,7 +2,7 @@ import path from "path";
 import fs from "fs";
 
 import { generateFromBlueprint } from "../engine/blueprint.engine.js";
-import { capitalize, plural } from "../lib/utils/string.js";
+import { capitalize, plural, toKebabCase } from "../lib/utils/string.js";
 
 import pageTemplate from "../lib/templates/page.template.js";
 import addModalTemplate from "../lib/templates/modal-add.template.js";
@@ -38,6 +38,36 @@ export function generateSubModule(parentName, subName) {
     Parent,
     Names: plural(Sub),
   };
+
+  function appendRoute(parentPath, subName) {
+    const routesFile = path.join(parentPath, "routes.js");
+
+    if (!fs.existsSync(routesFile)) return;
+
+    let content = fs.readFileSync(routesFile, "utf-8");
+
+    // Add import line if not exists
+    const importLine = `import ${subName}Page from './pages/${subName}Page.vue'`;
+    if (!content.includes(importLine)) {
+      content = importLine + "\n" + content;
+    }
+
+    // Route block to append
+    const routeBlock = `
+      {
+        path: '${plural(toKebabCase(subName))}',
+        name: '${subName} List',
+        component: ${subName}Page,
+      },`;
+
+    // Insert before the closing bracket of children array
+    content = content.replace(
+      /children:\s*\[([\s\S]*?)\]/m,
+      (match, inner) => `children: [${inner}${routeBlock}\n]`,
+    );
+
+    fs.writeFileSync(routesFile, content);
+  }
 
   generateFromBlueprint(ctx, {
     basePath: parentPath,
@@ -94,6 +124,8 @@ export function generateSubModule(parentName, subName) {
       },
     ],
   });
+
+  appendRoute(parentPath,  subName);
 
   console.log(`✅ Submodule "${sub}" created in "${parent}"`);
 }
