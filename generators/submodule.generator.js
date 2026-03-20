@@ -56,7 +56,7 @@ export function generateSubModule(parentName, subName) {
     const routeBlock = `
       {
         path: '${plural(toKebabCase(subName))}',
-        name: '${subName} List',
+        name: '${capitalize(subName)} List',
         component: ${subName}Page,
       },`;
 
