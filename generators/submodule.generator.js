@@ -5,15 +5,8 @@ import { generateFromBlueprint } from "../engine/blueprint.engine.js";
 import { capitalize, plural, toKebabCase } from "../lib/utils/string.js";
 
 import pageTemplate from "../lib/templates/page.template.js";
-import addModalTemplate from "../lib/templates/modal-add.template.js";
-import editModalTemplate from "../lib/templates/modal-edit.template.js";
+import formModalTemplate from "../lib/templates/modal-form.template.js";
 import viewModalTemplate from "../lib/templates/modal-view.template.js";
-import deleteModalTemplate from "../lib/templates/modal-delete.template.js";
-import commonFormTemplate from "../lib/templates/modal-common-form.template.js";
-import dataTemplate from "../lib/templates/data.template.js";
-import serviceTemplate from "../lib/templates/service.template.js";
-import queryTemplate from "../lib/templates/query.template.js";
-import mutationTemplate from "../lib/templates/mutation.template.js";
 import storeTemplate from "../lib/templates/store.template.js";
 
 export function generateSubModule(parentName, subName) {
@@ -58,6 +51,9 @@ export function generateSubModule(parentName, subName) {
         path: '${plural(toKebabCase(subName))}',
         name: '${capitalize(subName)} List',
         component: ${subName}Page,
+        meta: {
+          permissions: ['${sub}.view', '${sub}.create', '${sub}.edit', '${sub}.delete'],
+        },
       },`;
 
     // Insert before the closing bracket of children array
@@ -75,57 +71,25 @@ export function generateSubModule(parentName, subName) {
     folders: [`pages/${subName}Parts`],
 
     files: [
+      { path: "stores/{{subName}}Store.js", template: storeTemplate },
+
       {
         path: `pages/{{subName}}Page.vue`,
         template: pageTemplate,
       },
 
       {
-        path: `pages/{{subName}}Parts/AddModal.vue`,
-        template: addModalTemplate,
+        path: `pages/{{subName}}Parts/FormModal.vue`,
+        template: formModalTemplate,
       },
-
-      {
-        path: `pages/{{subName}}Parts/EditModal.vue`,
-        template: editModalTemplate,
-      },
-
       {
         path: `pages/{{subName}}Parts/ViewModal.vue`,
         template: viewModalTemplate,
       },
-
-      {
-        path: `pages/{{subName}}Parts/DeleteModal.vue`,
-        template: deleteModalTemplate,
-      },
-
-      {
-        path: `pages/{{subName}}Parts/CommonForm.vue`,
-        template: commonFormTemplate,
-      },
-      {
-        path: `data/{{subName}}Data.js`,
-        template: dataTemplate,
-      },
-
-      { path: "stores/{{subName}}Store.js", template: storeTemplate },
-
-      { path: "services/{{subName}}Service.js", template: serviceTemplate },
-
-      {
-        path: "queries/use{{subName}}Query.js",
-        template: queryTemplate,
-      },
-
-      {
-        path: "queries/use{{subName}}Mutations.js",
-        template: mutationTemplate,
-      },
     ],
   });
 
-  appendRoute(parentPath,  subName);
+  appendRoute(parentPath, subName);
 
   console.log(`✅ Submodule "${sub}" created in "${parent}"`);
 }
