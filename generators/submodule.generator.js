@@ -32,38 +32,61 @@ export function generateSubModule(parentName, subName) {
     Names: plural(Sub),
   };
 
-  function appendRoute(parentPath, subName) {
-    const routesFile = path.join(parentPath, "routes.js");
+function appendRoute(parentPath, subName) {
+  const routesFile = path.join(parentPath, "routes.js");
 
-    if (!fs.existsSync(routesFile)) return;
+  if (!fs.existsSync(routesFile)) return;
 
-    let content = fs.readFileSync(routesFile, "utf-8");
+  let content = fs.readFileSync(routesFile, "utf-8");
 
-    // Add import line if not exists
-    const importLine = `import ${subName}Page from './pages/${subName}Page.vue'`;
-    if (!content.includes(importLine)) {
-      content = importLine + "\n" + content;
-    }
+  const importLine = `import ${subName}Page from './pages/${subName}Page.vue'`;
 
-    // Route block to append
-    const routeBlock = `
+  // ✅ Add import safely
+  if (!content.includes(importLine)) {
+    content = importLine + "\n" + content;
+  }
+
+  const routeBlock = `
       {
         path: '${plural(toKebabCase(subName))}',
         name: '${capitalize(subName)} List',
         component: ${subName}Page,
         meta: {
-          permissions: ['${sub}.view', '${sub}.create', '${sub}.edit', '${sub}.delete'],
+          permissions: ['${subName.toLowerCase()}.view'],
         },
       },`;
 
-    // Insert before the closing bracket of children array
-    content = content.replace(
-      /children:\s*\[([\s\S]*?)\]/m,
-      (match, inner) => `children: [${inner}${routeBlock}\n]`,
-    );
+  // ✅ Find "children: ["
+  const childrenStart = content.indexOf("children:");
 
-    fs.writeFileSync(routesFile, content);
+  if (childrenStart === -1) return;
+
+  const arrayStart = content.indexOf("[", childrenStart);
+
+  if (arrayStart === -1) return;
+
+  // ✅ Proper bracket matching (IMPORTANT)
+  let bracketCount = 0;
+  let i = arrayStart;
+
+  for (; i < content.length; i++) {
+    if (content[i] === "[") bracketCount++;
+    else if (content[i] === "]") bracketCount--;
+
+    if (bracketCount === 0) break;
   }
+
+  const arrayEnd = i;
+
+  if (arrayEnd === -1) return;
+
+  const before = content.slice(0, arrayEnd);
+  const after = content.slice(arrayEnd);
+
+  content = before + routeBlock + "\n" + after;
+
+  fs.writeFileSync(routesFile, content);
+}
 
   generateFromBlueprint(ctx, {
     basePath: parentPath,
