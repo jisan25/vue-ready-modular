@@ -11,7 +11,7 @@ import storeTemplate from "../lib/templates/store.template.js";
 
 export function generateSubModule(parentName, subName) {
   const parent = parentName.toLowerCase();
-  const sub = subName.toLowerCase();
+  const sub = toKebabCase(subName).replace(/-/g, "_"); // SupplierProduct -> supplier_product
 
   const Parent = capitalize(parent);
   const Sub = capitalize(sub);
